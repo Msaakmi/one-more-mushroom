@@ -1,5 +1,5 @@
 class Background {
-  constructor(ctx, vx) {
+  constructor(ctx) {
     this.ctx = ctx
     
     this.image = new Image()
@@ -15,7 +15,7 @@ class Background {
       this.image.isReady = true
     }
 
-    this.vx = vx
+    this.vx = 0
   }
 
   draw() {
@@ -31,6 +31,6 @@ class Background {
   }
 
   move() {
-    
+
   }
 }

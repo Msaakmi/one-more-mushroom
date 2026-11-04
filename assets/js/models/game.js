@@ -9,12 +9,16 @@ class Game{
 
     this.ctx = this.canvas.getContext("2d")
 
-    this.bg = new Background(this.ctx, 0)
+    this.bg = new Background(this.ctx)
+    this.player = new Player(this.ctx)
   }
 
   start() {
     if(this.drawIntervalId === null){
+      this.setUpListeners()
       this.drawIntervalId = setInterval(() => {
+        this.clear()
+        this.move()
         this.draw()
       }, this.fps);
     }
@@ -22,15 +26,29 @@ class Game{
 
   draw() {
     this.bg.draw()
-  }
-
-  clear() {
-    
+    this.player.draw()
   }
 
   move() {
-
+    this.player.move()
   }
 
+  clear() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this,this.canvas.height)
+  }
 
+  stop() {
+    clearInterval(this.drawIntervalId)
+    this.drawIntervalId = null
+  }
+
+  setUpListeners() {
+    addEventListener("keydown", (event) => {
+      this.player.onKeyEvent(event)
+    })
+
+    addEventListener("keyup", (event) => {
+      this.player.onKeyEvent(event)
+    })
+  }
 }
