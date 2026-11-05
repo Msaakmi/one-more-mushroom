@@ -20,12 +20,17 @@ class Player {
     
     this.limitX = LIMIT_X
     this.limitY = LIMIT_Y
-  }
 
+    this.isRecolecting = false
+    this.recolectingFrames = 0
+  }
+  
   draw() {
     this.sprite.x = this.x
     this.sprite.y = this.y
-
+    
+    const isMoving = this.vx !== 0 || this.vy !== 0
+    this.sprite.animate(isMoving)
     this.sprite.draw()
   }
 
@@ -92,8 +97,11 @@ class Player {
 
       case SPACE:
         if(isPressed){
+          this.isRecolecting = true
+          this.recolectingFrames = RECOLECTING_TIME
           console.log("recolecting mushroom")
         }else{
+          this.isRecolecting = false
           console.log("mushroom recolected (or no)")
         }
       break

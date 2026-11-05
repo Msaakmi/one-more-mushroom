@@ -22,6 +22,8 @@ class Sprite {
     }
     
     this.sprite.src = src
+
+    this.drawCount = 0
   }
 
   draw() {
@@ -37,6 +39,35 @@ class Sprite {
         this.w,
         this.h
       )
+    }
+  }
+
+  animate(isMoving) {
+    if(isMoving) {
+      this.animateFrame(0,1,4,10)
+    }else{
+      this.sprite.colsFrame = 0
+      this.sprite.rowsFrame = 0
+      this.drawCount = 0
+    }
+  }
+
+  animateFrame(initialColFrame, initialRowFrame, frames, freq) {
+    if(this.sprite.rowsFrame !== initialRowFrame) {
+      this.sprite.rowsFrame = initialRowFrame
+      this.sprite.colsFrame = initialColFrame
+      this.drawCount = 0
+    }
+
+    this.drawCount++
+
+    if(this.drawCount >= freq) {
+      this.drawCount = 0
+      this.sprite.colsFrame++
+
+      if(this.sprite.colsFrame >= initialColFrame + frames) {
+        this.sprite.colsFrame = initialColFrame
+      }
     }
   }
 }
