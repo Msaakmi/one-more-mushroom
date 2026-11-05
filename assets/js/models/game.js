@@ -11,6 +11,7 @@ class Game{
 
     this.bg = new Background(this.ctx)
     this.player = new Player(this.ctx)
+    this.mushroom = new Mushroom(this.ctx, 0, 0, 50, 50, MUSHROOM_SRC)
   }
 
   start() {
@@ -26,11 +27,12 @@ class Game{
 
   draw() {
     this.bg.draw()
+    this.mushroom.draw(this.bg.x, this.bg.y)
     this.player.draw()
   }
 
   move() {
-    this.player.move()
+    this.player.move(this.bg.borderUp, this.bg.borderRight, this.bg.borderDown, this.bg.borderLeft)
     this.bg.move(this.player)
   }
 

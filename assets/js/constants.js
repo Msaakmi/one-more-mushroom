@@ -1,5 +1,5 @@
 //COMMON CONSTANTS
-const VX = 3
+const VX = 9
 const LIMIT_X = 90
 const LIMIT_Y = 250
 const KEY_UP = "ArrowUp"
@@ -26,6 +26,14 @@ const PLAYER_H = 65
 const RECOLECTING_TIME = 90
 
 // MUSHROOMS
+const ROVELLO = "assets/img/mushrooms/rovello.png"
+const OU_DE_REIG = "assets/img/mushrooms/ouDeReig.png"
+const CEP = "assets/img/mushrooms/cep.png"
+const POISONOUS1 = "assets/img/mushrooms/amanitaMuscaria.png"
+const POISONOUS2 = "assets/img/mushrooms/dolent.png"
+const ROSSINYOLS = "assets/img/mushrooms/rossinyols.png"
+const TROMPETA = "assets/img/mushrooms/trompeta.png"
+const MUSHROOM_SRC = "assets/img/mushrooms/amanitaMuscaria.png"
 
 // OBSTACLES
 

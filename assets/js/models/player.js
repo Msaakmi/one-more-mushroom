@@ -34,25 +34,56 @@ class Player {
     this.sprite.draw()
   }
 
-  move() {
+  move(borderUp, borderRight, borderDown, borderLeft) {
     this.x += this.vx
     this.y += this.vy
     
-    if(this.y < this.limitY) {
-      this.y = this.limitY
+    //BORDE SUPERIOR
+    let bordeSuperior = this.limitY
+    if(borderUp) {
+      bordeSuperior = 0
+    }else{
+      bordeSuperior = this.limitY
     }
 
-    if(this.x + this.w > this.ctx.canvas.width - this.limitX) {
-      this.x = (this.ctx.canvas.width - this.limitX) - this.w
+    if(this.y < bordeSuperior) {
+      this.y = bordeSuperior
+    }
+    
+    //BORDE DERECHO
+    let bordeDerecho = this.limitX
+    if(borderRight){
+      bordeDerecho = 0
+    }else{
+      bordeDerecho = this.limitX
     }
 
-    if(this.x < this.limitX){
-      this.x = this.limitX
+    if(this.x + this.w > this.ctx.canvas.width - bordeDerecho) {
+      this.x = (this.ctx.canvas.width - bordeDerecho) - this.w
+    }
+    
+    //BORDE INFERIOR
+    let bordeInferior = this.limitY
+    if(borderDown){
+      bordeInferior = 0
+    }else{
+      bordeInferior = this.limitY
     }
 
-    if(this.y + this.h > this.ctx.canvas.height - this.limitY) {
-      this.y = (this.ctx.canvas.height - this.limitY) - this.h
+    if(this.y + this.h > this.ctx.canvas.height - bordeInferior) {
+      this.y = (this.ctx.canvas.height - bordeInferior) - this.h
     }
+    
+    //BORDE IZQUIERDO
+    let bordeIzq = this.limitX
+    if(borderLeft){
+      bordeIzq = 0
+    }else{
+      bordeIzq = this.limitX
+    }
+    if(this.x < bordeIzq){
+      this.x = bordeIzq
+    }    
   }
 
   onKeyEvent(event) {

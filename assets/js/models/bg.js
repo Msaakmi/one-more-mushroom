@@ -17,7 +17,7 @@ class Background {
 
     this.vx = 0
 
-    this.player = this.ctx.player
+    this.canvas = this.ctx.canvas
   }
 
   draw() {
@@ -33,30 +33,39 @@ class Background {
   }
 
   move(player) {
-    const canvas = this.ctx.canvas
+
     // BORDE SUPERIOR
     if(player.y <= player.limitY && player.vy < 0) {
       this.y -= player.vy
     }
     if(this.y >= 0){
       this.y = 0
+      this.borderUp = true
+    }else{
+      this.borderUp = false
     }
 
     //BORDE DERECHO
-    if(player.x + player.w >= canvas.width - player.limitX && player.vx > 0){
+    if(player.x + player.w >= this.canvas.width - player.limitX && player.vx > 0){
       this.x -= player.vx
     }
 
-    if(this.x + this.w <= canvas.width) {
-      this.x = canvas.width - this.w
+    if(this.x + this.w <= this.canvas.width) {
+      this.x = this.canvas.width - this.w
+      this.borderRight = true
+    }else{
+      this.borderRight = false
     }
 
     //BORDE INFERIOR
-    if(player.y + player.h >= canvas.height - player.limitY && player.vy > 0) {
+    if(player.y + player.h >= this.canvas.height - player.limitY && player.vy > 0) {
       this.y -= player.vy
     }
-    if(this.y + this.h <= canvas.height){
-      this.y = canvas.height - this.h
+    if(this.y + this.h <= this.canvas.height){
+      this.y = this.canvas.height - this.h
+      this.borderDown = true
+    }else{
+      this.borderDown = false
     }
 
     //BORDE IZQUIERDO
@@ -65,7 +74,11 @@ class Background {
     }
     if(this.x >= 0) {
       this.x = 0
+      this.borderLeft = true
+    }else{
+      this.borderLeft = false
     }
+
 
   }
 }
