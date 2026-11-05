@@ -31,6 +31,7 @@ class Game{
 
   move() {
     this.player.move()
+    this.bg.move(this.player)
   }
 
   clear() {

@@ -18,8 +18,8 @@ class Player {
     this.spriteLeft = new Sprite(this.ctx, PLAYER_IMG_LEFT, this.x, this.y, this.w, this.h)
     this.sprite = this.spriteDown
     
-    this.limit = LIMIT
-    
+    this.limitX = LIMIT_X
+    this.limitY = LIMIT_Y
   }
 
   draw() {
@@ -33,20 +33,20 @@ class Player {
     this.x += this.vx
     this.y += this.vy
     
-    if(this.y < this.limit) {
-      this.y = this.limit
+    if(this.y < this.limitY) {
+      this.y = this.limitY
     }
 
-    if(this.x + this.w > this.ctx.canvas.width - this.limit) {
-      this.x = (this.ctx.canvas.width - this.limit) - this.w
+    if(this.x + this.w > this.ctx.canvas.width - this.limitX) {
+      this.x = (this.ctx.canvas.width - this.limitX) - this.w
     }
 
-    if(this.x < this.limit){
-      this.x = this.limit
+    if(this.x < this.limitX){
+      this.x = this.limitX
     }
 
-    if(this.y + this.h > this.ctx.canvas.height - LIMIT) {
-      this.y = (this.ctx.canvas.height - LIMIT) - this.h
+    if(this.y + this.h > this.ctx.canvas.height - this.limitY) {
+      this.y = (this.ctx.canvas.height - this.limitY) - this.h
     }
   }
 
