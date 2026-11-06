@@ -133,9 +133,17 @@ class Player {
           console.log("recolecting mushroom")
         }else{
           this.isRecolecting = false
+          this.recolectingFrames = 0
           console.log("mushroom recolected (or no)")
         }
       break
     }
+  }
+
+  collidesWith(element, bgX, bgY) {
+    return (this.x + this.w > element.x + bgX) &&
+    (this.x < (element.x + bgX) + element.w) &&
+    (this.y + this.h > element.y + bgY) &&
+    (this.y < (element.y + bgY) + element.h)
   }
 }
