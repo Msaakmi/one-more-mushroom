@@ -44,7 +44,7 @@ class Sprite {
 
   animate(isMoving) {
     if(isMoving) {
-      this.animateFrame(0,1,4,10)
+      this.animateFrame(0,1,4,12)
     }else{
       this.sprite.colsFrame = 0
       this.sprite.rowsFrame = 0

@@ -1,5 +1,5 @@
 //COMMON CONSTANTS
-const VX = 9
+const VX = 6
 const LIMIT_X = 90
 const LIMIT_Y = 250
 const KEY_UP = "ArrowUp"

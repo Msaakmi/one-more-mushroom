@@ -11,23 +11,29 @@ class Game{
 
     this.bg = new Background(this.ctx)
     this.player = new Player(this.ctx)
-    this.mushroom = new Mushroom(this.ctx, 0, 0, 50, 50, MUSHROOM_SRC)
+    this.mushroomsCreated = false
+    this.mushrooms = []
   }
 
   start() {
     if(this.drawIntervalId === null){
       this.setUpListeners()
       this.drawIntervalId = setInterval(() => {
+        if(this.bg.image.isReady && this.mushroomsCreated === false){
+          this.createMushroom()
+          this.mushroomsCreated = true
+        }
         this.clear()
         this.move()
         this.draw()
       }, this.fps);
     }
   }
-
+  
   draw() {
     this.bg.draw()
-    this.mushroom.draw(this.bg.x, this.bg.y)
+    this.mushrooms.forEach(mushroom => {mushroom.draw(this.bg.x, this.bg.y)
+    })
     this.player.draw()
   }
 
@@ -53,5 +59,78 @@ class Game{
     addEventListener("keyup", (event) => {
       this.player.onKeyEvent(event)
     })
+  }
+
+  createMushroom() {
+    const randomNumberOfTrumpets = Math.floor((Math.random() * 20) + 1)
+
+    for(let i = 0; i < randomNumberOfTrumpets; i++){
+      const randomX = Math.floor(Math.random() * (this.bg.w - 50))
+      const randomY = Math.floor(Math.random() * (this.bg.h - 50))
+      this.mushrooms.push(
+        new Mushroom(this.ctx, randomX, randomY, 50, 50, TROMPETA)
+      )
+    }
+    
+    const randomNumberOfPoisonous1 = Math.floor((Math.random() * 20) + 1)
+
+    for(let i = 0; i < randomNumberOfPoisonous1; i++){
+      const randomX = Math.floor(Math.random() * (this.bg.w - 50))
+      const randomY = Math.floor(Math.random() * (this.bg.h - 50))
+      this.mushrooms.push(
+        new Mushroom(this.ctx, randomX, randomY, 50, 50, POISONOUS1)
+      )
+    }
+    
+    const randomNumberOfCep = Math.floor((Math.random() * 20) + 1)
+
+    for(let i = 0; i < randomNumberOfCep; i++){
+      const randomX = Math.floor(Math.random() * (this.bg.w - 50))
+      const randomY = Math.floor(Math.random() * (this.bg.h - 50))
+      this.mushrooms.push(
+        new Mushroom(this.ctx, randomX, randomY, 50, 50, CEP)
+      )
+    }
+    
+    const randomNumberOfPoisonous2 = Math.floor((Math.random() * 20) + 1)
+
+    for(let i = 0; i < randomNumberOfPoisonous2; i++){
+      const randomX = Math.floor(Math.random() * (this.bg.w - 50))
+      const randomY = Math.floor(Math.random() * (this.bg.h - 50))
+      this.mushrooms.push(
+        new Mushroom(this.ctx, randomX, randomY, 50, 50, POISONOUS2)
+      )
+    }
+    
+    const randomNumberOfReig = Math.floor((Math.random() * 20) + 1)
+
+    for(let i = 0; i < randomNumberOfReig; i++){
+      const randomX = Math.floor(Math.random() * (this.bg.w - 50))
+      const randomY = Math.floor(Math.random() * (this.bg.h - 50))
+      this.mushrooms.push(
+        new Mushroom(this.ctx, randomX, randomY, 50, 50, OU_DE_REIG)
+      )
+    }
+    
+    const randomNumberOfRossinyols = Math.floor((Math.random() * 20) + 1)
+
+    for(let i = 0; i < randomNumberOfRossinyols; i++){
+      const randomX = Math.floor(Math.random() * (this.bg.w - 50))
+      const randomY = Math.floor(Math.random() * (this.bg.h - 50))
+      this.mushrooms.push(
+        new Mushroom(this.ctx, randomX, randomY, 50, 50, ROSSINYOLS)
+      )
+    }
+    
+    const randomNumberOfRovello = Math.floor((Math.random() * 20) + 1)
+
+    for(let i = 0; i < randomNumberOfRovello; i++){
+      const randomX = Math.floor(Math.random() * (this.bg.w - 50))
+      const randomY = Math.floor(Math.random() * (this.bg.h - 50))
+      this.mushrooms.push(
+        new Mushroom(this.ctx, randomX, randomY, 50, 50, ROVELLO)
+      )
+    }
+    console.log(this.mushrooms)
   }
 }
