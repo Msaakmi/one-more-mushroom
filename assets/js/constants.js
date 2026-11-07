@@ -23,7 +23,7 @@ const PLAYER_IMG_LEFT = "assets/img/player/player_left.png"
 const PLAYER_IMG_UP = "assets/img/player/player_up.png"
 const PLAYER_W = 50
 const PLAYER_H = 65
-const RECOLECTING_TIME = 90
+const ANIMATE_TIME = 90
 
 // MUSHROOMS
 const ROVELLO = "assets/img/mushrooms/rovello.png"

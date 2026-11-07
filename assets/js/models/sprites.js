@@ -42,8 +42,14 @@ class Sprite {
     }
   }
 
-  animate(isMoving) {
-    if(isMoving) {
+  animate(isRecolecting, isMoving, isRecivingDamage) {
+    if(isRecivingDamage){
+      this.animateFrame(0, 3, 4, 12)
+      return
+    }
+    if(isRecolecting){
+      this.animateFrame(0, 2, 4, 23)
+    }else if(isMoving){
       this.animateFrame(0,1,4,12)
     }else{
       this.sprite.colsFrame = 0

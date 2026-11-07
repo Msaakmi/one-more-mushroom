@@ -13,6 +13,11 @@ class Game{
     this.player = new Player(this.ctx)
     this.mushroomsCreated = false
     this.mushrooms = []
+
+    this.isRecolecting = false
+    this.animateFrames = 0
+    this.mushroomCollided = null
+    this.recivingDamage = false
   }
 
   start() {
@@ -25,8 +30,14 @@ class Game{
         }
         this.clear()
         this.move()
+        this.recolectMushroom()
+        this.player.countActualizer()
+        if(this.player.animateFrames > 0){
+          this.recivingDamage = true
+        }else{
+          this.recivingDamage = false
+        }
         this.draw()
-        this.checkCollisions()
       }, this.fps);
     }
   }
@@ -35,7 +46,7 @@ class Game{
     this.bg.draw()
     this.mushrooms.forEach(mushroom => {mushroom.draw(this.bg.x, this.bg.y)
     })
-    this.player.draw()
+    this.player.draw(this.isRecolecting, this.recivingDamage)
   }
 
   move() {
@@ -44,7 +55,7 @@ class Game{
   }
 
   clear() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this,this.canvas.height)
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
   }
 
   stop() {
@@ -181,15 +192,47 @@ class Game{
     }
     console.log("rovellons esperats " + randomNumberOfRovello)
     console.log("rovellons creats " + acceptedRovello)
-    console.log(this.mushrooms)
   }
   
-  checkCollisions() {
-    this.mushrooms = this.mushrooms.filter(mushroom => {
-      if(this.player.collidesWith(mushroom, this.bg.x, this.bg.y)){
-        return false
+
+  recolectMushroom() {
+    const collidesWithMushroom = this.mushrooms.some(mushroom => this.player.collidesWith(mushroom, this.bg.x, this.bg.y))
+    if(this.player.collectPressed && collidesWithMushroom){
+      if(this.isRecolecting === false){
+        this.isRecolecting = true
+        this.animateFrames = ANIMATE_TIME
+        this.mushroomCollided = this.mushrooms.find(mushroom => {
+          if(this.player.collidesWith(mushroom, this.bg.x, this.bg.y)){
+            return mushroom
+          }
+        })
+      }else{
+        if(this.player.collidesWith(this.mushroomCollided, this.bg.x, this.bg.y)){
+          this.animateFrames--
+          if(this.animateFrames === 0){
+            if(this.mushroomCollided.isPoisonous === true){
+              this.player.recieveDamage(1)
+            }
+            this.mushrooms = this.mushrooms.filter(mush => {
+              if(mush === this.mushroomCollided){
+                return false
+              }
+              return true
+            })
+            this.isRecolecting = false
+            this.animateFrames = 0
+            this.mushroomCollided = null
+          }
+        }else{
+          this.isRecolecting = false
+          this.animateFrames = 0
+          this.mushroomCollided = null
+        }
       }
-      return true
-    })
+    }else{
+      this.isRecolecting = false
+      this.animateFrames = 0
+      this.mushroomCollided = null
+    }
   }
 }

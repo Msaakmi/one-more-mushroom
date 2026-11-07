@@ -21,16 +21,18 @@ class Player {
     this.limitX = LIMIT_X
     this.limitY = LIMIT_Y
 
-    this.isRecolecting = false
-    this.recolectingFrames = 0
+    this.collectPressed = false
+    this.animateFrames = 0
+
+    this.lives = 3
   }
   
-  draw() {
+  draw(isRecolecting, recivingDamage) {
     this.sprite.x = this.x
     this.sprite.y = this.y
     
     const isMoving = this.vx !== 0 || this.vy !== 0
-    this.sprite.animate(isMoving)
+    this.sprite.animate(isRecolecting, isMoving, recivingDamage)
     this.sprite.draw()
   }
 
@@ -128,13 +130,9 @@ class Player {
 
       case SPACE:
         if(isPressed){
-          this.isRecolecting = true
-          this.recolectingFrames = RECOLECTING_TIME
-          console.log("recolecting mushroom")
+          this.collectPressed = true
         }else{
-          this.isRecolecting = false
-          this.recolectingFrames = 0
-          console.log("mushroom recolected (or no)")
+          this.collectPressed = false
         }
       break
     }
@@ -146,4 +144,22 @@ class Player {
     (this.y + this.h > element.y + bgY) &&
     (this.y < (element.y + bgY) + element.h)
   }
+
+  recieveDamage(damage) {
+    this.lives -= damage
+    if(this.lives < 0){
+      this.lives = 0
+    }
+    this.animateFrames = ANIMATE_TIME
+  }
+
+  countActualizer(){
+    if(this.animateFrames > 0){
+      this.animateFrames--
+    }else if(this.animateFrames <= 0){
+      this.animateFrames = 0
+    }
+  }
+
+
 }
