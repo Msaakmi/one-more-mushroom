@@ -18,6 +18,12 @@ class Game{
     this.animateFrames = 0
     this.mushroomCollided = null
     this.recivingDamage = false
+
+    this.heart = new Image()
+    this.heart.src = PLAYER_HEARTS
+    this.heart.onload = () => {
+      this.heart.isReady = true
+    }
   }
 
   start() {
@@ -38,6 +44,11 @@ class Game{
           this.recivingDamage = false
         }
         this.draw()
+
+        if(this.checkGameOver()){
+          this.stop()
+          this.gameOver()
+        }
       }, this.fps);
     }
   }
@@ -47,6 +58,7 @@ class Game{
     this.mushrooms.forEach(mushroom => {mushroom.draw(this.bg.x, this.bg.y)
     })
     this.player.draw(this.isRecolecting, this.recivingDamage)
+    this.drawHearts()
   }
 
   move() {
@@ -61,6 +73,10 @@ class Game{
   stop() {
     clearInterval(this.drawIntervalId)
     this.drawIntervalId = null
+  }
+
+  gameOver(){
+    window.location.reload()
   }
 
   setUpListeners() {
@@ -234,5 +250,23 @@ class Game{
       this.animateFrames = 0
       this.mushroomCollided = null
     }
+  }
+
+  drawHearts() {
+    if(this.heart.isReady){
+      for(let i = 0; i < this.player.lives; i++){
+        this.ctx.drawImage(
+          this.heart,
+          (10 + HEARTS_W) * i + 20,
+          20,
+          HEARTS_W,
+          HEARTS_H
+        )
+      }
+    }
+  }
+
+  checkGameOver() {
+    return this.player.lives <= 0
   }
 }
