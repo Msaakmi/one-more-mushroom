@@ -16,14 +16,16 @@ const GAME_FPS = 1000 / 60
 const CANVAS_W = 360
 const CANVAS_H = 700
 
+//HEARTS
+const PLAYER_HEARTS = "assets/img/heart.png"
+const HEARTS_W = 24
+const HEARTS_H = 24
+
 // PLAYER
 const PLAYER_IMG_DOWN = "assets/img/player/player_down.png"
 const PLAYER_IMG_RIGHT = "assets/img/player/player_rigth.png"
 const PLAYER_IMG_LEFT = "assets/img/player/player_left.png"
 const PLAYER_IMG_UP = "assets/img/player/player_up.png"
-const PLAYER_HEARTS = "assets/img/heart.png"
-const HEARTS_W = 24
-const HEARTS_H = 24
 const PLAYER_W = 50
 const PLAYER_H = 65
 const ANIMATE_TIME = 90
@@ -39,7 +41,7 @@ const TROMPETA = "assets/img/mushrooms/trompeta.png"
 const MUSHROOM_SRC = "assets/img/mushrooms/amanitaMuscaria.png"
 
 // OBSTACLES
-
+const ROCKS = "assets/img/obstacles/rocks.png"
 
 // TREE
 

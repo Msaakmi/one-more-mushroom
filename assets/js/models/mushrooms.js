@@ -1,5 +1,5 @@
 class Mushroom {
-  constructor(ctx, x, y, w, h, src, isPoisonous = false) {
+  constructor(ctx, x, y, w, h, src, type, isPoisonous = false) {
     this.ctx = ctx
 
     this.x = x
@@ -8,6 +8,7 @@ class Mushroom {
     this.w = w
     this.h = h
 
+    this.type = type
     this.isPoisonous = isPoisonous
 
     this.image = new Image()
