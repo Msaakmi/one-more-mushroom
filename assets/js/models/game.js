@@ -9,6 +9,10 @@ class Game{
 
     this.ctx = this.canvas.getContext("2d")
 
+    this.bgMusic = new Audio("assets/music/minecraft.mp3")
+    this.bgMusic.volume = 0.1
+    this.bgMusic.loop = true
+
     this.bg = new Background(this.ctx)
     this.player = new Player(this.ctx)
     this.obstacle = new Obstacle(this.ctx, 1000, 1000, 100, 100, ROCKS)
@@ -17,8 +21,14 @@ class Game{
 
     this.isRecolecting = false
     this.animateFrames = 0
+    this.recolectingAudio = new Audio("assets/music/eating-mushroom.mp3")
+    this.recolectingAudio.volume = 0.2
+    this.recolectedAudio = new Audio("assets/music/grab.mp3")
+    this.recolectedAudio.volume = 0.3
+
     this.mushroomCollided = null
     this.recivingDamage = false
+    this.damageAudio = new Audio("assets/music/damage.mp3")
 
     this.heart = new Image()
     this.heart.src = PLAYER_HEARTS
@@ -49,27 +59,38 @@ class Game{
 
   start() {
     if(this.drawIntervalId === null){
+      this.bgMusic.play()
       this.setUpListeners()
       this.drawIntervalId = setInterval(() => {
+
         if(this.bg.image.isReady && this.mushroomsCreated === false){
           this.createMushrooms()
           this.mushroomsCreated = true
         }
+
         this.clear()
         this.move()
         this.recolectMushroom()
         this.player.countActualizer()
+
         if(this.player.animateFrames > 0){
           this.recivingDamage = true
         }else{
           this.recivingDamage = false
         }
+
         this.draw()
         this.mushroomsCounter()
-        if(this.checkGameOver()){
+        let checkGameover = this.checkGameOver()
+
+        if(checkGameover === "defeat"){
           this.stop()
           this.gameOver()
+        }else if(checkGameover ==="victory"){
+          this.stop()
+          alert("Has encontrado todas las setas, ¡Que vista!")
         }
+
       }, this.fps);
     }
   }
@@ -118,7 +139,9 @@ class Game{
   }
 
   gameOver(){
-    window.location.reload()
+    //window.location.reload()
+    console.log("derrota")
+    alert("has perdido todas las vidas!")
   }
 
   setUpListeners() {
@@ -252,6 +275,7 @@ class Game{
     const collidesWithMushroom = this.mushrooms.some(mushroom => this.player.collidesWith(mushroom, this.bg.x, this.bg.y))
     if(this.player.collectPressed && collidesWithMushroom){
       if(this.isRecolecting === false){
+        this.recolectingAudio.play()
         this.isRecolecting = true
         this.animateFrames = ANIMATE_TIME
         this.mushroomCollided = this.mushrooms.find(mushroom => {
@@ -264,18 +288,23 @@ class Game{
           this.animateFrames--
           if(this.animateFrames === 0){
             if(this.mushroomCollided.type === "cep"){
+              this.recolectedAudio.play()
               this.inventory.cep += 1
             }
             if(this.mushroomCollided.type === "reig"){
+              this.recolectedAudio.play()
               this.inventory.reig += 1
             }
             if(this.mushroomCollided.type === "rossinyol"){
+              this.recolectedAudio.play()
               this.inventory.rossinyol += 1
             }
             if(this.mushroomCollided.type === "rovello"){
+              this.recolectedAudio.play()
               this.inventory.rovello += 1
             }
             if(this.mushroomCollided.type === "trompeta"){
+              this.recolectedAudio.play()
               this.inventory.trompeta += 1
             }
             if(this.mushroomCollided.type === "manita"){
@@ -285,6 +314,7 @@ class Game{
               this.inventory.dolent += 1
             }
             if(this.mushroomCollided.isPoisonous === true){
+              this.damageAudio.play()
               this.player.recieveDamage(1)
             }
             this.mushrooms = this.mushrooms.filter(mush => {
@@ -307,6 +337,8 @@ class Game{
       this.isRecolecting = false
       this.animateFrames = 0
       this.mushroomCollided = null
+      this.recolectingAudio.pause()
+      this.recolectingAudio.currentTime = 0
     }
   }
 
@@ -339,6 +371,19 @@ class Game{
   }
 
   checkGameOver() {
-    return this.player.lives <= 0
+    if(this.player.lives <= 0){
+      return "defeat"
+    }
+    if(this.mushroomsCreated){
+      if((this.inventory.cep === this.accepted.cep) && 
+      (this.inventory.reig === this.accepted.reig) && 
+      (this.inventory.rossinyol === this.accepted.rossinyol) &&
+      (this.inventory.rovello === this.accepted.rovello) &&
+      (this.inventory.trompeta === this.accepted.trompeta)){
+        return "victory"
+      }
+    }
+
+    return null
   }
 }

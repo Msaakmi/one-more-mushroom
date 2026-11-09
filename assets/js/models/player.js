@@ -17,6 +17,10 @@ class Player {
     this.spriteDown = new Sprite(this.ctx, PLAYER_IMG_DOWN, this.x, this.y, this.w, this.h)
     this.spriteLeft = new Sprite(this.ctx, PLAYER_IMG_LEFT, this.x, this.y, this.w, this.h)
     this.sprite = this.spriteDown
+
+    this.walkingAudio = new Audio("assets/music/walking.mp3")
+    this.walkingAudio.loop = true
+    this.walkingAudio.volume = 0.1
     
     this.limitX = LIMIT_X
     this.limitY = LIMIT_Y
@@ -86,6 +90,13 @@ class Player {
     if(this.x < bordeIzq){
       this.x = bordeIzq
     }    
+
+    if(this.vx != 0 || this.vy != 0){
+      this.walkingAudio.play()
+    }else{
+      this.walkingAudio.pause()
+      this.walkingAudio.currentTime = 0
+    }
   }
 
   onKeyEvent(event) {
