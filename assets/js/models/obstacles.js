@@ -1,5 +1,5 @@
 class Obstacle {
-  constructor(ctx, x, y, w, h, src, inflictsDamage = false) {
+  constructor(ctx, x, y, colFrame, rowFrame, w, h, src, collidesBox, inflictsDamage = false) {
     this.ctx = ctx
     this.x = x
     this.y = y
@@ -13,8 +13,8 @@ class Obstacle {
     
     this.sprite.cols = 3
     this.sprite.rows = 2
-    this.sprite.colsFrame = 0
-    this.sprite.rowsFrame = 0
+    this.sprite.colsFrame = colFrame
+    this.sprite.rowsFrame = rowFrame
 
     this.sprite.onload = () => {
       
@@ -26,10 +26,7 @@ class Obstacle {
     
     this.sprite.src = src
 
-    this.firstRockX = 35
-    this.firstRockY = 55
-    this.firstRockW = 40
-    this.firstRockH = 25
+    this.collidesBox = collidesBox
   }
   
   draw(bgX, bgY) {
@@ -45,15 +42,22 @@ class Obstacle {
         this.w,
         this.h
       )
+
+      this.ctx.fillRect(
+        this.x + bgX + this.collidesBox.offsetX,
+        this.y + bgY + this.collidesBox.offsetY,
+        this.collidesBox.w,
+        this.collidesBox.h
+      )
     }
   }
 
   boxToCollides() {
     return {
-      x: this.x + this.firstRockX,
-      y: this.y + this.firstRockY,
-      w: this.firstRockW,
-      h: this.firstRockH
+      x: this.x + this.collidesBox.offsetX,
+      y: this.y + this.collidesBox.offsetY,
+      w: this.collidesBox.w,
+      h: this.collidesBox.h
     }
   }
 }

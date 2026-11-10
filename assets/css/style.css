@@ -31,20 +31,20 @@ body{
 
 #inventory{
   display: flex;
+  justify-content: space-evenly;
   margin-top: -5px;
   width: 360px;
-  height: 6%;
 }
 
 .mush{
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
 }
 
 .mush img {
   margin-bottom: -20px;
-  width: 75%;
+  width: 40px;
 }
 
 .mush p{

@@ -10,12 +10,14 @@ class Game{
     this.ctx = this.canvas.getContext("2d")
 
     this.bgMusic = new Audio("assets/music/minecraft.mp3")
-    this.bgMusic.volume = 0.1
+    this.bgMusic.volume = 0.3
     this.bgMusic.loop = true
 
     this.bg = new Background(this.ctx)
     this.player = new Player(this.ctx)
-    this.obstacle = new Obstacle(this.ctx, 1000, 1000, 100, 100, ROCKS)
+
+    this.obstaclesCreated = false
+    this.obstacles = []
     this.mushroomsCreated = false
     this.mushrooms = []
 
@@ -68,6 +70,11 @@ class Game{
           this.mushroomsCreated = true
         }
 
+        if(this.bg.image.isReady && this.obstaclesCreated === false){
+          this.createObstacles()
+          this.obstaclesCreated = true
+        }
+
         this.clear()
         this.move()
         this.recolectMushroom()
@@ -97,8 +104,8 @@ class Game{
   
   draw() {
     this.bg.draw()
+    this.obstacles.forEach(obstacle => obstacle.draw(this.bg.x, this.bg.y))
     this.mushrooms.forEach(mushroom => {mushroom.draw(this.bg.x, this.bg.y)})
-    this.obstacle.draw(this.bg.x, this.bg.y)
     this.player.draw(this.isRecolecting, this.recivingDamage)
     this.drawHearts()
   }
@@ -115,18 +122,26 @@ class Game{
     this.player.move(this.bg.borderUp, this.bg.borderRight, this.bg.borderDown, this.bg.borderLeft)
     this.bg.move(this.player)
     
-    //COLISION CON OBSTACULOS
-    const box = this.obstacle.boxToCollides()
-    if(this.player.collidesWith(box, this.bg.x, this.bg.y)){
-      this.player.x = playerX
-      this.player.y = playerY
-      this.bg.x = bgX
-      this.bg.y = bgY
-      this.bg.borderUp = borderUp
-      this.bg.borderRight = borderRight
-      this.bg.borderDown = borderDown
-      this.bg.borderLeft = borderLeft
-    }
+    // COLISION CON OBSTACULOS
+    const playerCollidesWithBox = this.obstacles.some(obstacle => { 
+      const box = obstacle.boxToCollides()
+      if(this.player.collidesWith(box, this.bg.x, this.bg.y)){
+        return true
+      }else{
+        return false
+      }
+    })
+
+     if(playerCollidesWithBox){
+       this.player.x = playerX
+       this.player.y = playerY
+       this.bg.x = bgX
+       this.bg.y = bgY
+       this.bg.borderUp = borderUp
+       this.bg.borderRight = borderRight
+       this.bg.borderDown = borderDown
+       this.bg.borderLeft = borderLeft
+     }
   }
 
   clear() {
@@ -268,9 +283,137 @@ class Game{
     this.accepted.rovello = acceptedRovello
   }
   
-  checkCollisions() {
-  }
+  createObstacles() {
+    const collidesBoxRocks = {
+      rock1: {
+      offsetX: 40,
+      offsetY: 55,
+      w: 30,
+      h: 25
+      },
+      rock2: {
+        offsetX: 35,
+        offsetY: 45,
+        w: 30,
+        h: 35
+      },
+      rock3: {
+        offsetX: 20,
+        offsetY: 65,
+        w: 60,
+        h: 15
+      },
+      rock4: {
+        offsetX: 30,
+        offsetY: 35,
+        w: 40,
+        h: 45
+      },
+      rock6: {
+        offsetX: 35,
+        offsetY: 50,
+        w: 35,
+        h: 30
+      }
+    } 
 
+    const collidesBoxTrees = {
+      tree1: {
+      offsetX: 50,
+      offsetY: 55,
+      w: 50,
+      h: 65
+      },
+      tree2: {
+        offsetX: 66,
+        offsetY: 65,
+        w: 23,
+        h: 65
+      },
+      tree3: {
+        offsetX: 50,
+        offsetY: 65,
+        w: 30,
+        h: 55
+      },
+      tree4: {
+        offsetX: 55,
+        offsetY: 55,
+        w: 30,
+        h: 73
+      },
+      tree5: {
+        offsetX: 60,
+        offsetY: 55,
+        w: 40,
+        h: 73
+      },
+      tree6: {
+        offsetX: 45,
+        offsetY: 60,
+        w: 55,
+        h: 60
+      }
+    } 
+
+    const collidesBoxBrambles = {
+      bramble1: {
+      offsetX: 30,
+      offsetY: 45,
+      w: 50,
+      h: 35
+      },
+      bramble2: {
+        offsetX: 25,
+        offsetY: 25,
+        w: 40,
+        h: 60
+      },
+      bramble3: {
+        offsetX: 10,
+        offsetY: 65,
+        w: 30,
+        h: 55
+      },
+      bramble4: {
+        offsetX: 55,
+        offsetY: 55,
+        w: 30,
+        h: 73
+      },
+      bramble5: {
+        offsetX: 60,
+        offsetY: 55,
+        w: 40,
+        h: 73
+      },
+      bramble6: {
+        offsetX: 45,
+        offsetY: 60,
+        w: 55,
+        h: 60
+      }
+    } 
+
+    const collidesBoxTrunks = {
+      trunk1: {
+      offsetX: 25,
+      offsetY: 45,
+      w: 60,
+      h: 25
+      },
+    } 
+
+
+    this.obstacles.push(
+      new Obstacle(this.ctx, 1760, 1650, 0, 0, 100, 100, BRAMBLE, collidesBoxBrambles.bramble1, true),
+      new Obstacle(this.ctx, 1760, 2100, 1, 0, 100, 100, BRAMBLE, collidesBoxBrambles.bramble2, true),
+      new Obstacle(this.ctx, 1870, 2100, 1, 1, 100, 100, BRAMBLE, collidesBoxBrambles.bramble3, true),
+      new Obstacle(this.ctx, 1870, 1650, 2, 1, 100, 100, BRAMBLE, collidesBoxBrambles.bramble4, true),
+      new Obstacle(this.ctx, 2000, 1650, 2, 0, 100, 100, BRAMBLE, collidesBoxBrambles.bramble5, true),
+      new Obstacle(this.ctx, 2000, 2100, 0, 1, 100, 100, BRAMBLE, collidesBoxBrambles.bramble6, true),
+    )
+  }
   recolectMushroom() {
     const collidesWithMushroom = this.mushrooms.some(mushroom => this.player.collidesWith(mushroom, this.bg.x, this.bg.y))
     if(this.player.collectPressed && collidesWithMushroom){
@@ -348,6 +491,36 @@ class Game{
     const rossinyolsCounter = document.getElementById("rossinyols_counter")
     const rovelloCounter = document.getElementById("rovello_counter")
     const trompetaCounter = document.getElementById("trompeta_counter")
+
+    if(this.inventory.cep === 0){
+      cepCounter.parentElement.style.display = "none"
+    }else{
+      cepCounter.parentElement.style.display = "flex"
+    }
+
+    if(this.inventory.reig === 0){
+      reigCounter.parentElement.style.display = "none"
+    }else{
+      reigCounter.parentElement.style.display = "flex"
+    }
+
+    if(this.inventory.rossinyol === 0){
+      rossinyolsCounter.parentElement.style.display = "none"
+    }else{
+      rossinyolsCounter.parentElement.style.display = "flex"
+    }
+
+    if(this.inventory.rovello === 0){
+      rovelloCounter.parentElement.style.display = "none"
+    }else{
+      rovelloCounter.parentElement.style.display = "flex"
+    }
+
+    if(this.inventory.trompeta === 0){
+      trompetaCounter.parentElement.style.display = "none"
+    }else{
+      trompetaCounter.parentElement.style.display = "flex"
+    }
 
     cepCounter.textContent = `${this.inventory.cep}/${this.accepted.cep}`
     reigCounter.textContent = `${this.inventory.reig}/${this.accepted.reig}`

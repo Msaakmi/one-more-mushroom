@@ -42,6 +42,9 @@ const MUSHROOM_SRC = "assets/img/mushrooms/amanitaMuscaria.png"
 
 // OBSTACLES
 const ROCKS = "assets/img/obstacles/rocks.png"
+const BRAMBLE = "assets/img/obstacles/bramble.png"
+const TREES = "assets/img/obstacles/trees.png"
+const TRUNK = "assets/img/obstacles/trunk.png"
 
 // TREE
 
