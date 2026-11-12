@@ -43,13 +43,20 @@ class Obstacle {
         this.h
       )
 
-      this.ctx.fillRect(
+      this.ctx.strokeRect(
         this.x + bgX + this.collidesBox.offsetX,
         this.y + bgY + this.collidesBox.offsetY,
         this.collidesBox.w,
         this.collidesBox.h
       )
     }
+  }
+
+  collidesWith(element) {
+    return (this.x + this.w > element.x) &&
+    (this.x < element.x + element.w) &&
+    (this.y + this.h > element.y) &&
+    (this.y < element.y + element.h)
   }
 
   boxToCollides() {

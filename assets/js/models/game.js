@@ -104,8 +104,8 @@ class Game{
   
   draw() {
     this.bg.draw()
-    this.obstacles.forEach(obstacle => obstacle.draw(this.bg.x, this.bg.y))
     this.mushrooms.forEach(mushroom => {mushroom.draw(this.bg.x, this.bg.y)})
+    this.obstacles.forEach(obstacle => obstacle.draw(this.bg.x, this.bg.y))
     this.player.draw(this.isRecolecting, this.recivingDamage)
     this.drawHearts()
   }
@@ -122,26 +122,43 @@ class Game{
     this.player.move(this.bg.borderUp, this.bg.borderRight, this.bg.borderDown, this.bg.borderLeft)
     this.bg.move(this.player)
     
-    // COLISION CON OBSTACULOS
+    // COLISION CON OBSTACULOS QUE NO HACEN DAÑO
     const playerCollidesWithBox = this.obstacles.some(obstacle => { 
-      const box = obstacle.boxToCollides()
-      if(this.player.collidesWith(box, this.bg.x, this.bg.y)){
-        return true
-      }else{
-        return false
+      if(obstacle.inflictsDamage === false) {
+        const box = obstacle.boxToCollides()
+        if(this.player.collidesWith(box, this.bg.x, this.bg.y)){
+          return true
+        }else{
+          return false
+        }
+      }  
+    })
+    if(playerCollidesWithBox){
+      this.player.x = playerX
+      this.player.y = playerY
+      this.bg.x = bgX
+      this.bg.y = bgY
+      this.bg.borderUp = borderUp
+      this.bg.borderRight = borderRight
+      this.bg.borderDown = borderDown
+      this.bg.borderLeft = borderLeft
+    }
+
+    //COLISION CON BRAMBLES
+    const playerCollidesWithBramble = this.obstacles.some(obstacle => {
+      if(obstacle.inflictsDamage === true){
+        const box = obstacle.boxToCollides()
+        if(this.player.collidesWith(box, this.bg.x, this.bg.y)){
+          return true
+        }else{
+          return false
+        }
       }
     })
-
-     if(playerCollidesWithBox){
-       this.player.x = playerX
-       this.player.y = playerY
-       this.bg.x = bgX
-       this.bg.y = bgY
-       this.bg.borderUp = borderUp
-       this.bg.borderRight = borderRight
-       this.bg.borderDown = borderDown
-       this.bg.borderLeft = borderLeft
-     }
+    if(playerCollidesWithBramble){
+      this.damageAudio.play()
+      this.player.recieveDamage(1)
+    }
   }
 
   clear() {
@@ -317,6 +334,55 @@ class Game{
       }
     } 
 
+    const rocksVariants = [
+      {
+        colFrame: 0,
+        rowFrame: 0,
+        box: collidesBoxRocks.rock1
+      },
+      {
+        colFrame: 1,
+        rowFrame: 0,
+        box: collidesBoxRocks.rock2
+      },
+      {
+        colFrame: 2,
+        rowFrame: 0,
+        box: collidesBoxRocks.rock3
+      },
+      {
+        colFrame: 0,
+        rowFrame: 1,
+        box: collidesBoxRocks.rock4
+      },
+      {
+        colFrame: 1,
+        rowFrame: 1,
+        box: collidesBoxRocks.rock4
+      },
+      {
+        colFrame: 2,
+        rowFrame: 1,
+        box: collidesBoxRocks.rock6
+      }
+    ]
+
+    rocksVariants.forEach(variant => {
+      let acceptedRocks = 0
+      for(let i = 0; acceptedRocks < 10 && i < 100; i++){
+        const randomX = Math.floor(Math.random() * (this.bg.w - 100))
+        const randomY = Math.floor(Math.random() * (this.bg.h - 100))
+        const rock = new Obstacle(this.ctx, randomX, randomY, variant.colFrame, variant.rowFrame, 100, 100, ROCKS, variant.box)
+        
+        if(!this.player.collidesWith(rock, this.bg.x, this.bg.y) && !this.mushrooms.some(m => m.collidesWith(rock)) && !this.obstacles.some(o => o.collidesWith(rock))){
+          this.obstacles.push(
+          rock
+          )
+          acceptedRocks++
+        }
+      }
+    })
+
     const collidesBoxTrees = {
       tree1: {
       offsetX: 50,
@@ -356,12 +422,61 @@ class Game{
       }
     } 
 
+    const treeVariants = [
+      {
+        colFrame: 0,
+        rowFrame: 0,
+        box: collidesBoxTrees.tree1
+      },
+      {
+        colFrame: 1,
+        rowFrame: 0,
+        box: collidesBoxTrees.tree2
+      },
+      {
+        colFrame: 2,
+        rowFrame: 0,
+        box: collidesBoxTrees.tree3
+      },
+      {
+        colFrame: 0,
+        rowFrame: 1,
+        box: collidesBoxTrees.tree4
+      },
+      {
+        colFrame: 1,
+        rowFrame: 1,
+        box: collidesBoxTrees.tree5
+      },
+      {
+        colFrame: 2,
+        rowFrame: 1,
+        box: collidesBoxTrees.tree6
+      }
+    ]
+
+    treeVariants.forEach(variant => {
+      let acceptedTrees = 0
+      for(let i = 0; acceptedTrees < 5 && i < 100; i++){
+        const randomX = Math.floor(Math.random() * (this.bg.w - 150))
+        const randomY = Math.floor(Math.random() * (this.bg.h - 150))
+        const tree = new Obstacle(this.ctx, randomX, randomY, variant.colFrame, variant.rowFrame, 150, 150, TREES, variant.box)
+        
+        if(!this.player.collidesWith(tree, this.bg.x, this.bg.y) && !this.mushrooms.some(m => m.collidesWith(tree)) && !this.obstacles.some(o => o.collidesWith(tree))){
+          this.obstacles.push(
+          tree
+          )
+          acceptedTrees++
+        }
+      }
+    })
+
     const collidesBoxBrambles = {
       bramble1: {
-      offsetX: 30,
-      offsetY: 45,
+      offsetX: 25,
+      offsetY: 25,
       w: 50,
-      h: 35
+      h: 50
       },
       bramble2: {
         offsetX: 25,
@@ -370,50 +485,139 @@ class Game{
         h: 60
       },
       bramble3: {
-        offsetX: 10,
-        offsetY: 65,
-        w: 30,
-        h: 55
+        offsetX: 20,
+        offsetY: 35,
+        w: 60,
+        h: 45
       },
       bramble4: {
-        offsetX: 55,
-        offsetY: 55,
-        w: 30,
-        h: 73
+        offsetX: 10,
+        offsetY: 35,
+        w: 80,
+        h: 45
       },
       bramble5: {
-        offsetX: 60,
-        offsetY: 55,
-        w: 40,
-        h: 73
+        offsetX: 20,
+        offsetY: 45,
+        w: 70,
+        h: 20
       },
       bramble6: {
-        offsetX: 45,
-        offsetY: 60,
-        w: 55,
-        h: 60
+        offsetX: 20,
+        offsetY: 40,
+        w: 45,
+        h: 50
       }
     } 
+    
+    const brambleVariants = [
+      {
+        colFrame: 0,
+        rowFrame: 0,
+        box: collidesBoxBrambles.bramble1
+      },
+      {
+        colFrame: 1,
+        rowFrame: 0,
+        box: collidesBoxBrambles.bramble2
+      },
+      {
+        colFrame: 1,
+        rowFrame: 1,
+        box: collidesBoxBrambles.bramble3
+      },
+      {
+        colFrame: 2,
+        rowFrame: 1,
+        box: collidesBoxBrambles.bramble4
+      },
+      {
+        colFrame: 2,
+        rowFrame: 0,
+        box: collidesBoxBrambles.bramble5
+      },
+      {
+        colFrame: 0,
+        rowFrame: 1,
+        box: collidesBoxBrambles.bramble6
+      }
+    ]
 
-    const collidesBoxTrunks = {
-      trunk1: {
+    brambleVariants.forEach(variant => {
+      let acceptedBrambles = 0
+      for(let i = 0; acceptedBrambles < 3 && i < 100; i++){
+        const randomX = Math.floor(Math.random() * (this.bg.w - 100))
+        const randomY = Math.floor(Math.random() * (this.bg.h - 100))
+        const bramble = new Obstacle(this.ctx, randomX, randomY, variant.colFrame, variant.rowFrame, 100, 100, BRAMBLE, variant.box, true)
+        
+        if(!this.player.collidesWith(bramble, this.bg.x, this.bg.y) && !this.mushrooms.some(m => m.collidesWith(bramble)) && !this.obstacles.some(o => o.collidesWith(bramble))){
+          this.obstacles.push(
+          bramble
+          )
+          acceptedBrambles++
+        }
+      }
+    })
+
+    const collidesBoxTrunk = {
       offsetX: 25,
       offsetY: 45,
       w: 60,
       h: 25
-      },
     } 
 
+    const trunkVariants = [
+      {
+        colFrame: 0,
+        rowFrame: 0,
+        box: collidesBoxTrunk
+      },
+      {
+        colFrame: 1,
+        rowFrame: 0,
+        box: collidesBoxTrunk
+      },
+      {
+        colFrame: 2,
+        rowFrame: 0,
+        box: collidesBoxTrunk
+      },
+      {
+        colFrame: 0,
+        rowFrame: 1,
+        box: collidesBoxTrunk
+      },
+      {
+        colFrame: 1,
+        rowFrame: 1,
+        box: collidesBoxTrunk
+      },
+      {
+        colFrame: 2,
+        rowFrame: 1,
+        box: collidesBoxTrunk
+      }
+    ]
 
-    this.obstacles.push(
-      new Obstacle(this.ctx, 1760, 1650, 0, 0, 100, 100, BRAMBLE, collidesBoxBrambles.bramble1, true),
-      new Obstacle(this.ctx, 1760, 2100, 1, 0, 100, 100, BRAMBLE, collidesBoxBrambles.bramble2, true),
-      new Obstacle(this.ctx, 1870, 2100, 1, 1, 100, 100, BRAMBLE, collidesBoxBrambles.bramble3, true),
-      new Obstacle(this.ctx, 1870, 1650, 2, 1, 100, 100, BRAMBLE, collidesBoxBrambles.bramble4, true),
-      new Obstacle(this.ctx, 2000, 1650, 2, 0, 100, 100, BRAMBLE, collidesBoxBrambles.bramble5, true),
-      new Obstacle(this.ctx, 2000, 2100, 0, 1, 100, 100, BRAMBLE, collidesBoxBrambles.bramble6, true),
-    )
+    trunkVariants.forEach(variant => {
+      let acceptedTrunk = 0
+      for(let i = 0; acceptedTrunk < 10 && i < 100; i++){
+        const randomX = Math.floor(Math.random() * (this.bg.w - 100))
+        const randomY = Math.floor(Math.random() * (this.bg.h - 100))
+        const trunk = new Obstacle(this.ctx, randomX, randomY, variant.colFrame, variant.rowFrame, 100, 100, TRUNK, variant.box)
+        
+        if(!this.player.collidesWith(trunk, this.bg.x, this.bg.y) && !this.mushrooms.some(m => m.collidesWith(trunk)) && !this.obstacles.some(o => o.collidesWith(trunk))){
+          this.obstacles.push(
+          trunk         
+         )
+          acceptedTrunk++
+        }
+      }
+    })
+
+    console.log(this.obstacles)
   }
+
   recolectMushroom() {
     const collidesWithMushroom = this.mushrooms.some(mushroom => this.player.collidesWith(mushroom, this.bg.x, this.bg.y))
     if(this.player.collectPressed && collidesWithMushroom){

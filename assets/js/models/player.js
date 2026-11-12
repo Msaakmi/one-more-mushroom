@@ -157,11 +157,15 @@ class Player {
   }
 
   recieveDamage(damage) {
-    this.lives -= damage
-    if(this.lives < 0){
-      this.lives = 0
+    if(this.animateFrames > 0){
+      return
+    }else{
+      this.lives -= damage
+      if(this.lives < 0){
+        this.lives = 0
+      }
+      this.animateFrames = ANIMATE_TIME
     }
-    this.animateFrames = ANIMATE_TIME
   }
 
   countActualizer(){
