@@ -63,44 +63,76 @@ class Game{
 
   start() {
     if(this.drawIntervalId === null){
+      this.previousFrame = null
+      this.accumulatedTime = 0
+
       this.bgMusic.play()
       this.setUpListeners()
-      this.drawIntervalId = setInterval(() => {
 
-        if(this.bg.image.isReady && this.mushroomsCreated === false){
-          this.createMushrooms()
-          this.mushroomsCreated = true
-        }
+      this.drawIntervalId = requestAnimationFrame(
+        time => this.loop(time)
+      )
+    }
+  }
 
-        if(this.bg.image.isReady && this.obstaclesCreated === false){
-          this.createObstacles()
-          this.obstaclesCreated = true
-        }
+  loop(timestamp){
+    if(this.drawIntervalId === null) return
 
-        this.clear()
-        this.move()
-        this.recolectMushroom()
-        this.player.countActualizer()
+    if(this.previousFrame === null){
+      this.previousFrame = timestamp
+    }
 
-        if(this.player.animateFrames > 0){
-          this.recivingDamage = true
-        }else{
-          this.recivingDamage = false
-        }
+    const elapsed = Math.min(
+      timestamp - this.previousFrame,
+      100
+    )
+    
+    this.previousFrame = timestamp
+    this.accumulatedTime += elapsed
 
-        this.draw()
-        this.mushroomsCounter()
-        const checkGameover = this.checkGameOver()
+    while (this.accumulatedTime >= this.fps) {
+      this.accumulatedTime -= this.fps
+      this.update()
 
-        if(checkGameover === "defeat"){
-          this.stop()
-          this.gameOver()
-        }else if(checkGameover ==="victory"){
-          this.stop()
-          this.victory()
-        }
+    if (this.drawIntervalId === null) return
+    }
 
-      }, this.fps);
+    this.drawIntervalId = requestAnimationFrame(
+      timestamp => this.loop(timestamp)
+    )
+  }
+
+  update() {
+    if(this.bg.image.isReady && this.mushroomsCreated === false){
+      this.createMushrooms()
+      this.mushroomsCreated = true
+    }
+
+    if(this.bg.image.isReady && this.obstaclesCreated === false){
+      this.createObstacles()
+      this.obstaclesCreated = true
+    }
+    this.clear()
+    this.move()
+    this.recolectMushroom()
+    this.player.countActualizer()
+
+    if(this.player.animateFrames > 0){
+      this.recivingDamage = true
+    }else{
+      this.recivingDamage = false
+    }
+
+    this.draw()
+    this.mushroomsCounter()
+    const checkGameover = this.checkGameOver()
+
+    if(checkGameover === "defeat"){
+      this.stop()
+      this.gameOver()
+    }else if(checkGameover ==="victory"){
+      this.stop()
+      this.victory()
     }
   }
   
@@ -167,8 +199,11 @@ class Game{
   }
 
   stop() {
-    clearInterval(this.drawIntervalId)
+  if (this.drawIntervalId !== null) {
+    cancelAnimationFrame(this.drawIntervalId)
     this.drawIntervalId = null
+    }
+
     this.bgMusic.pause()
     this.player.walkingAudio.pause()
     this.player.damageAudio.pause()

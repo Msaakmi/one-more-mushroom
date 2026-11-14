@@ -130,7 +130,7 @@ body{
 
    #gameplay {
   position: fixed;
-  bottom: 32px;
+  bottom: 5px;
   left: 25px;
   right: 25px;
   z-index: 10;
