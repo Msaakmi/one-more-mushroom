@@ -213,9 +213,7 @@ class Game{
     //window.location.reload()
     const gameOverDiv = document.getElementById("gameOver")
     const gameDiv = document.getElementById("game-div")
-    const gamePlay = document.getElementById("gameplay")
 
-    gamePlay.style.display = "none"
     gameOverDiv.style.display = "flex"
     gameDiv.style.display = "none"
 
