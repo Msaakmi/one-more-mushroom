@@ -202,6 +202,10 @@ class Game{
 
   setUpListeners() {
     const upBtn = document.getElementById("up")
+    const rightBtn = document.getElementById("right")
+    const downBtn = document.getElementById("down")
+    const leftBtn = document.getElementById("left")
+    const recolectBtn = document.getElementById("recolect")
 
     addEventListener("keydown", (event) => {
       this.player.onKeyEvent(event.code, event.type === "keydown")
@@ -219,6 +223,46 @@ class Game{
     })
     upBtn.addEventListener("pointercancel", () => {
       this.player.onKeyEvent(KEY_UP, false)
+    })
+
+    rightBtn.addEventListener("pointerdown", () => {
+      this.player.onKeyEvent(KEY_RIGHT, true)
+    })
+    rightBtn.addEventListener("pointerup", () => {
+      this.player.onKeyEvent(KEY_RIGHT, false)
+    })
+    rightBtn.addEventListener("pointercancel", () => {
+      this.player.onKeyEvent(KEY_RIGHT, false)
+    })
+
+    downBtn.addEventListener("pointerdown", () => {
+      this.player.onKeyEvent(KEY_DOWN, true)
+    })
+    downBtn.addEventListener("pointerup", () => {
+      this.player.onKeyEvent(KEY_DOWN, false)
+    })
+    downBtn.addEventListener("pointercancel", () => {
+      this.player.onKeyEvent(KEY_DOWN, false)
+    })
+
+    leftBtn.addEventListener("pointerdown", () => {
+      this.player.onKeyEvent(KEY_LEFT, true)
+    })
+    leftBtn.addEventListener("pointerup", () => {
+      this.player.onKeyEvent(KEY_LEFT, false)
+    })
+    leftBtn.addEventListener("pointercancel", () => {
+      this.player.onKeyEvent(KEY_LEFT, false)
+    })
+
+    recolectBtn.addEventListener("pointerdown", () => {
+      this.player.onKeyEvent(SPACE, true)
+    })
+    recolectBtn.addEventListener("pointerup", () => {
+      this.player.onKeyEvent(SPACE, false)
+    })
+    recolectBtn.addEventListener("pointercancel", () => {
+      this.player.onKeyEvent(SPACE, false)
     })
   }
 
