@@ -43,12 +43,12 @@ class Obstacle {
         this.h
       )
 
-      this.ctx.strokeRect(
-        this.x + bgX + this.collidesBox.offsetX,
-        this.y + bgY + this.collidesBox.offsetY,
-        this.collidesBox.w,
-        this.collidesBox.h
-      )
+      // this.ctx.strokeRect(
+      //   this.x + bgX + this.collidesBox.offsetX,
+      //   this.y + bgY + this.collidesBox.offsetY,
+      //   this.collidesBox.w,
+      //   this.collidesBox.h
+      // )
     }
   }
 

@@ -7,30 +7,49 @@
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
+  <div id = "start">
+    <img  id="start-img" src="assets/img/start.png" alt="One More Mushroom">
+    <button id="start-btn"></button>
+  </div>
   <div id="game-div">
     <canvas id="game"></canvas>
+    <div id = "inventory">
+      <div class="mush">
+        <img id="cep" src="assets/img/mushrooms/cep.png" alt="Cep">
+        <p id="cep_counter"></p>
+      </div>
+      <div class="mush">
+        <img id="ouDeReig" src="assets/img/mushrooms/ouDeReig.png" alt="Ou de Reig">
+        <p id="ouDeReig_counter"></p>
+      </div>
+      <div class="mush">
+        <img id="rossinyols" src="assets/img/mushrooms/rossinyols.png" alt="Rossinyols">
+        <p id="rossinyols_counter"></p>
+      </div>
+      <div class="mush">
+        <img id="rovello" src="assets/img/mushrooms/rovello.png" alt="Rovelló">
+        <p id="rovello_counter"></p>
+      </div>
+      <div class="mush">
+        <img id="trompeta" src="assets/img/mushrooms/trompeta.png" alt="Trompeta">
+        <p id="trompeta_counter"></p> 
+      </div>  
+    </div>
   </div>
-  <div id = "inventory">
-    <div class="mush">
-      <img id="cep" src="assets/img/mushrooms/cep.png" alt="Cep">
-      <p id="cep_counter"></p>
+  
+  <div id="gameplay">
+    <img src="" alt="">
+    <div>
+      <img src="" alt="">
+      <img src="" alt="">
+      <img src="" alt="">
+      <img src="" alt="">
     </div>
-    <div class="mush">
-      <img id="ouDeReig" src="assets/img/mushrooms/ouDeReig.png" alt="Ou de Reig">
-      <p id="ouDeReig_counter"></p>
-    </div>
-    <div class="mush">
-      <img id="rossinyols" src="assets/img/mushrooms/rossinyols.png" alt="Rossinyols">
-      <p id="rossinyols_counter"></p>
-    </div>
-    <div class="mush">
-      <img id="rovello" src="assets/img/mushrooms/rovello.png" alt="Rovelló">
-      <p id="rovello_counter"></p>
-    </div>
-    <div class="mush">
-      <img id="trompeta" src="assets/img/mushrooms/trompeta.png" alt="Trompeta">
-      <p id="trompeta_counter"></p> 
-    </div>  
+  </div>
+  
+  <div id = "gameOver">
+    <img  id="gameOver-img" src="assets/img/gameover.png" alt="Game Over!">
+    <button id="playAgain-btn"></button>
   </div>
 
   <script src="assets/js/constants.js"></script>

@@ -30,7 +30,6 @@ class Game{
 
     this.mushroomCollided = null
     this.recivingDamage = false
-    this.damageAudio = new Audio("assets/music/damage.mp3")
 
     this.heart = new Image()
     this.heart.src = PLAYER_HEARTS
@@ -57,6 +56,8 @@ class Game{
       manita: 0,
       dolent: 0
     }
+
+    this.defeatAudio = new Audio("assets/music/defeat.mp3")
   }
 
   start() {
@@ -88,7 +89,7 @@ class Game{
 
         this.draw()
         this.mushroomsCounter()
-        let checkGameover = this.checkGameOver()
+        const checkGameover = this.checkGameOver()
 
         if(checkGameover === "defeat"){
           this.stop()
@@ -156,7 +157,6 @@ class Game{
       }
     })
     if(playerCollidesWithBramble){
-      this.damageAudio.play()
       this.player.recieveDamage(1)
     }
   }
@@ -168,12 +168,22 @@ class Game{
   stop() {
     clearInterval(this.drawIntervalId)
     this.drawIntervalId = null
+    this.bgMusic.pause()
+    this.player.walkingAudio.pause()
+    this.player.damageAudio.pause()
   }
 
   gameOver(){
     //window.location.reload()
-    console.log("derrota")
-    alert("has perdido todas las vidas!")
+    const gameOverDiv = document.getElementById("gameOver")
+    const gameDiv = document.getElementById("game-div")
+    const gamePlay = document.getElementById("gameplay")
+
+    gamePlay.style.display = "none"
+    gameOverDiv.style.display = "flex"
+    gameDiv.style.display = "none"
+
+    this.defeatAudio.play()
   }
 
   setUpListeners() {
@@ -614,8 +624,6 @@ class Game{
         }
       }
     })
-
-    console.log(this.obstacles)
   }
 
   recolectMushroom() {
@@ -661,7 +669,6 @@ class Game{
               this.inventory.dolent += 1
             }
             if(this.mushroomCollided.isPoisonous === true){
-              this.damageAudio.play()
               this.player.recieveDamage(1)
             }
             this.mushrooms = this.mushrooms.filter(mush => {
@@ -696,33 +703,23 @@ class Game{
     const rovelloCounter = document.getElementById("rovello_counter")
     const trompetaCounter = document.getElementById("trompeta_counter")
 
-    if(this.inventory.cep === 0){
-      cepCounter.parentElement.style.display = "none"
-    }else{
+    if(this.inventory.cep !== 0){
       cepCounter.parentElement.style.display = "flex"
     }
 
-    if(this.inventory.reig === 0){
-      reigCounter.parentElement.style.display = "none"
-    }else{
+    if(this.inventory.reig !== 0){
       reigCounter.parentElement.style.display = "flex"
     }
 
-    if(this.inventory.rossinyol === 0){
-      rossinyolsCounter.parentElement.style.display = "none"
-    }else{
+    if(this.inventory.rossinyol !== 0){
       rossinyolsCounter.parentElement.style.display = "flex"
     }
 
-    if(this.inventory.rovello === 0){
-      rovelloCounter.parentElement.style.display = "none"
-    }else{
+    if(this.inventory.rovello !== 0){
       rovelloCounter.parentElement.style.display = "flex"
     }
 
-    if(this.inventory.trompeta === 0){
-      trompetaCounter.parentElement.style.display = "none"
-    }else{
+    if(this.inventory.trompeta !== 0){
       trompetaCounter.parentElement.style.display = "flex"
     }
 

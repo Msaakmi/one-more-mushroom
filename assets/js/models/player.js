@@ -21,6 +21,9 @@ class Player {
     this.walkingAudio = new Audio("assets/music/walking.mp3")
     this.walkingAudio.loop = true
     this.walkingAudio.volume = 0.1
+
+      
+    this.damageAudio = new Audio("assets/music/damage.mp3")
     
     this.limitX = LIMIT_X
     this.limitY = LIMIT_Y
@@ -165,6 +168,8 @@ class Player {
         this.lives = 0
       }
       this.animateFrames = ANIMATE_TIME
+      this.damageAudio.currentTime = 0.2
+      this.damageAudio.play()
     }
   }
 
