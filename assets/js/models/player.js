@@ -103,10 +103,8 @@ class Player {
     }
   }
 
-  onKeyEvent(event) {
-    const isPressed = event.type === "keydown"
-
-    switch(event.code) {
+  onKeyEvent(code, isPressed) {
+    switch(code) {
       case KEY_UP:
         if(isPressed){
           this.sprite = this.spriteUp

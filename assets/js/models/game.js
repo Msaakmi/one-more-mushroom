@@ -201,12 +201,24 @@ class Game{
   }
 
   setUpListeners() {
+    const upBtn = document.getElementById("up")
+
     addEventListener("keydown", (event) => {
-      this.player.onKeyEvent(event)
+      this.player.onKeyEvent(event.code, event.type === "keydown")
     })
 
     addEventListener("keyup", (event) => {
-      this.player.onKeyEvent(event)
+      this.player.onKeyEvent(event.code, event.type === "keydown")
+    })
+
+    upBtn.addEventListener("pointerdown", () => {
+      this.player.onKeyEvent(KEY_UP, true)
+    })
+    upBtn.addEventListener("pointerup", () => {
+      this.player.onKeyEvent(KEY_UP, false)
+    })
+    upBtn.addEventListener("pointercancel", () => {
+      this.player.onKeyEvent(KEY_UP, false)
     })
   }
 
