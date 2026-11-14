@@ -90,6 +90,20 @@ body{
    #gameOver-img{
     width: 100%;
    }
+
+   #victory{
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    justify-content: flex-start;
+    align-items: center;
+    z-index: 100;
+  }
+  
+   #victory-img{
+    width: 100%;
+   }
   
    #playAgain-btn{
     background: none;
@@ -102,3 +116,92 @@ body{
     margin-top: -160px;
   
    }
+
+   #playAgain-btn-victory{
+    background: none;
+    background-image: url("../img/playagain-btn.png");
+    background-size: cover;
+    background-position: center;
+    border: 0px;
+    width: 50%;
+    height: 60px;
+    margin-top: -160px;
+  
+   }
+
+   #gameplay {
+  position: fixed;
+  bottom: 32px;
+  left: 25px;
+  right: 25px;
+  z-index: 10;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  pointer-events: none;
+}
+
+#gameplay button {
+  background-color: transparent;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: none;
+  padding: 0;
+  height: 56px;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+#recolect {
+  background-image: url("../img/buttons/recolect.png");
+  width: 80px;
+}
+#recolect:active {
+  background-image: url("../img/buttons/recolect-hover.png");
+}
+
+#movement {
+  display: grid;
+  grid-template-columns: repeat(3, 56px);
+  grid-template-rows: repeat(2, 56px);
+  grid-template-areas:
+    ". up ."
+    "left down right";
+  gap: 6px;
+}
+
+#up {
+  background-image: url("../img/buttons/up.png");
+  grid-area: up;
+}
+#up:active {
+  background-image: url("../img/buttons/up-hover.png");
+}
+
+#right {
+  background-image: url("../img/buttons/right.png");
+  grid-area: right;
+}
+#right:active {
+  background-image: url("../img/buttons/right-hover.png");
+}
+
+#down {
+  background-image: url("../img/buttons/down.png");
+  grid-area: down;
+}
+#down:active {
+  background-image: url("../img/buttons/down-hover.png");
+}
+
+#left {
+  background-image: url("../img/buttons/left.png");
+  grid-area: left;
+}
+#left:active {
+  background-image: url("../img/buttons/left-hover.png");
+}
+

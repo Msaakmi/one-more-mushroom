@@ -24,6 +24,7 @@ class Player {
 
       
     this.damageAudio = new Audio("assets/music/damage.mp3")
+    this.damageAudio.volume = 0.3
     
     this.limitX = LIMIT_X
     this.limitY = LIMIT_Y

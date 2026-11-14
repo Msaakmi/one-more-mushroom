@@ -10,7 +10,7 @@ class Game{
     this.ctx = this.canvas.getContext("2d")
 
     this.bgMusic = new Audio("assets/music/minecraft.mp3")
-    this.bgMusic.volume = 0.3
+    this.bgMusic.volume = 0.2
     this.bgMusic.loop = true
 
     this.bg = new Background(this.ctx)
@@ -24,9 +24,9 @@ class Game{
     this.isRecolecting = false
     this.animateFrames = 0
     this.recolectingAudio = new Audio("assets/music/eating-mushroom.mp3")
-    this.recolectingAudio.volume = 0.2
+    this.recolectingAudio.volume = 0.1
     this.recolectedAudio = new Audio("assets/music/grab.mp3")
-    this.recolectedAudio.volume = 0.3
+    this.recolectedAudio.volume = 0.2
 
     this.mushroomCollided = null
     this.recivingDamage = false
@@ -58,6 +58,7 @@ class Game{
     }
 
     this.defeatAudio = new Audio("assets/music/defeat.mp3")
+    this.victoryAudio = new Audio("assets/music/victory.mp3")
   }
 
   start() {
@@ -96,7 +97,7 @@ class Game{
           this.gameOver()
         }else if(checkGameover ==="victory"){
           this.stop()
-          alert("Has encontrado todas las setas, ¡Que vista!")
+          this.victory()
         }
 
       }, this.fps);
@@ -184,6 +185,19 @@ class Game{
     gameDiv.style.display = "none"
 
     this.defeatAudio.play()
+  }
+
+  victory(){
+    //window.location.reload()
+    const victoryDiv = document.getElementById("victory")
+    const gameDiv = document.getElementById("game-div")
+    const gamePlay = document.getElementById("gameplay")
+
+    gamePlay.style.display = "none"
+    victoryDiv.style.display = "flex"
+    gameDiv.style.display = "none"
+
+    this.victoryAudio.play()
   }
 
   setUpListeners() {
@@ -749,7 +763,7 @@ class Game{
       return "defeat"
     }
     if(this.mushroomsCreated){
-      if((this.inventory.cep === this.accepted.cep) && 
+      if((this.inventory.cep === 1) && 
       (this.inventory.reig === this.accepted.reig) && 
       (this.inventory.rossinyol === this.accepted.rossinyol) &&
       (this.inventory.rovello === this.accepted.rovello) &&
