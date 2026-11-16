@@ -32,10 +32,10 @@ class Player {
     this.collectPressed = false
     this.animateFrames = 0
 
-    this.lives = 3
+    this.lives = LIVES
   }
   
-  draw(isRecolecting, recivingDamage) {
+  draw(isRecolecting, recivingDamage) { // DES DE PLAYER LE PASO LA ACCIÓN AL SPRITE PARA QUE SEPA CUAL PINTAR
     this.sprite.x = this.x
     this.sprite.y = this.y
     
@@ -44,7 +44,7 @@ class Player {
     this.sprite.draw()
   }
 
-  move(borderUp, borderRight, borderDown, borderLeft) {
+  move(borderUp, borderRight, borderDown, borderLeft) { //SISTEMA DE BORDES DE PLAYER
     this.x += this.vx
     this.y += this.vy
     
@@ -172,7 +172,7 @@ class Player {
     }
   }
 
-  countActualizer(){
+  countActualizer(){ //CONTADOR PARA SABER CUANDO TERMINAR LA ANIMACION DE DAÑO
     if(this.animateFrames > 0){
       this.animateFrames--
     }else if(this.animateFrames <= 0){

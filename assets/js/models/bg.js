@@ -40,7 +40,7 @@ class Background {
     }
     if(this.y >= 0){
       this.y = 0
-      this.borderUp = true
+      this.borderUp = true //CAPTURAMOS LÍMITES PARA QUE SEAN LOS MISMOS QUE PARA PLAYER
     }else{
       this.borderUp = false
     }

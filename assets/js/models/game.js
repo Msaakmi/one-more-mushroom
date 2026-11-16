@@ -10,19 +10,19 @@ class Game{
     this.ctx = this.canvas.getContext("2d")
 
     this.bgMusic = new Audio("assets/music/minecraft.mp3")
-    this.bgMusic.volume = 0.2
+    this.bgMusic.volume = 0.4
     this.bgMusic.loop = true
 
     this.bg = new Background(this.ctx)
     this.player = new Player(this.ctx)
 
-    this.obstaclesCreated = false
     this.obstacles = []
-    this.mushroomsCreated = false
+    this.obstaclesCreated = false
     this.mushrooms = []
+    this.mushroomsCreated = false
 
     this.isRecolecting = false
-    this.animateFrames = 0
+    this.animateFrames = 0 //CONTADOR PARA LA ANIMACIÓN DE RECOGIDA DEL SPRITE
     this.recolectingAudio = new Audio("assets/music/eating-mushroom.mp3")
     this.recolectingAudio.volume = 0.1
     this.recolectedAudio = new Audio("assets/music/grab.mp3")
@@ -70,7 +70,7 @@ class Game{
       this.setUpListeners()
 
       this.drawIntervalId = requestAnimationFrame(
-        time => this.loop(time)
+        time => this.loop(time) //CAMBIO DE SETINTERVAL A ESTE SISTEMA PARA QUE FUNCIONE EN MOBIL
       )
     }
   }
@@ -90,19 +90,19 @@ class Game{
     this.previousFrame = timestamp
     this.accumulatedTime += elapsed
 
-    while (this.accumulatedTime >= this.fps) {
+    while (this.accumulatedTime >= this.fps) { //EL NUEVO LOOP
       this.accumulatedTime -= this.fps
       this.update()
 
     if (this.drawIntervalId === null) return
     }
 
-    this.drawIntervalId = requestAnimationFrame(
+    this.drawIntervalId = requestAnimationFrame( // SISTEMA PARA CONTAR EL TIEMPO
       timestamp => this.loop(timestamp)
     )
   }
 
-  update() {
+  update() { //TODA LA LÓGICA DEL SETINTERVAL
     if(this.bg.image.isReady && this.mushroomsCreated === false){
       this.createMushrooms()
       this.mushroomsCreated = true
@@ -138,13 +138,13 @@ class Game{
   
   draw() {
     this.bg.draw()
-    this.mushrooms.forEach(mushroom => {mushroom.draw(this.bg.x, this.bg.y)})
+    this.mushrooms.forEach(mushroom => {mushroom.draw(this.bg.x, this.bg.y)}) //LE PASO LOS DATOS DEL BG PARA QUE SE MUEVAN CON ÉL
     this.obstacles.forEach(obstacle => obstacle.draw(this.bg.x, this.bg.y))
-    this.player.draw(this.isRecolecting, this.recivingDamage)
+    this.player.draw(this.isRecolecting, this.recivingDamage) //SISTEMA DE ANIMACIONES DE SPRITE (PRIMERO SE LO PASO A PLAYER Y LUEGO A SPRITE)
     this.drawHearts()
   }
 
-  move() {
+  move() { //PRIMERO CAPTURAMOS POSICIONES Y LÍMITES
     const playerX = this.player.x
     const playerY = this.player.y
     const bgX = this.bg.x
@@ -153,12 +153,12 @@ class Game{
     const borderRight = this.bg.borderRight
     const borderDown = this.bg.borderDown
     const borderLeft = this.bg.borderLeft
-    this.player.move(this.bg.borderUp, this.bg.borderRight, this.bg.borderDown, this.bg.borderLeft)
-    this.bg.move(this.player)
+    this.player.move(this.bg.borderUp, this.bg.borderRight, this.bg.borderDown, this.bg.borderLeft) //LE PASAMOS LOS LÍMITES DEL BG PARA QUE PUEDA LLEGAR AL FINAL
+    this.bg.move(this.player) //PARA QUE SE MUEVA AL CONTRARIO DEL PLAYER
     
     // COLISION CON OBSTACULOS QUE NO HACEN DAÑO
     const playerCollidesWithBox = this.obstacles.some(obstacle => { 
-      if(obstacle.inflictsDamage === false) {
+      if(obstacle.inflictsDamage === false) { //CREAMOS ESTE IF PARA QUE DEVUELVA TRUE CUANDO EL OBSTACULO NO INFLINGE DAÑO
         const box = obstacle.boxToCollides()
         if(this.player.collidesWith(box, this.bg.x, this.bg.y)){
           return true
@@ -167,7 +167,7 @@ class Game{
         }
       }  
     })
-    if(playerCollidesWithBox){
+    if(playerCollidesWithBox){ // SI COLISIONAMOS CON EL, NO ME DEJES AVANZAR
       this.player.x = playerX
       this.player.y = playerY
       this.bg.x = bgX
@@ -180,7 +180,7 @@ class Game{
 
     //COLISION CON BRAMBLES
     const playerCollidesWithBramble = this.obstacles.some(obstacle => {
-      if(obstacle.inflictsDamage === true){
+      if(obstacle.inflictsDamage === true){ //SI HACE DAÑO DEVUELVE TRUE
         const box = obstacle.boxToCollides()
         if(this.player.collidesWith(box, this.bg.x, this.bg.y)){
           return true
@@ -189,7 +189,7 @@ class Game{
         }
       }
     })
-    if(playerCollidesWithBramble){
+    if(playerCollidesWithBramble){ //SI HACE DAÑO RESTAME 1 A LAS VIDAS DE PLAYER
       this.player.recieveDamage(1)
     }
   }
@@ -240,7 +240,7 @@ class Game{
     const leftBtn = document.getElementById("left")
     const recolectBtn = document.getElementById("recolect")
 
-    addEventListener("keydown", (event) => {
+    addEventListener("keydown", (event) => { //PARA LA JUGABILDAD EN MÓBIL 
       this.player.onKeyEvent(event.code, event.type === "keydown")
     })
 
@@ -248,7 +248,7 @@ class Game{
       this.player.onKeyEvent(event.code, event.type === "keydown")
     })
 
-    upBtn.addEventListener("pointerdown", () => {
+    upBtn.addEventListener("pointerdown", () => { //CUANDO HACES CLICK EN EL BOTÓN HAZ LO MISMO QUE CON LA TECLA
       this.player.onKeyEvent(KEY_UP, true)
     })
     upBtn.addEventListener("pointerup", () => {
@@ -302,11 +302,11 @@ class Game{
   createMushrooms() {
     const randomNumberOfTrumpets = Math.floor((Math.random() * 20) + 1)
     let acceptedTrumpets = 0
-    for(let i = 0; acceptedTrumpets < randomNumberOfTrumpets && i < 100; i++){
+    for(let i = 0; acceptedTrumpets < randomNumberOfTrumpets && i < 100; i++){ //HACER MÁXIMO 100 INTENTOS PARA CADA GENERACION DE SETA
       const randomX = Math.floor(Math.random() * (this.bg.w - 40))
       const randomY = Math.floor(Math.random() * (this.bg.h - 40))
       const trumpet = new Mushroom(this.ctx, randomX, randomY, 40, 40, TROMPETA, "trompeta", false)
-      const collides = this.mushrooms.some(m => m.collidesWith(trumpet))
+      const collides = this.mushrooms.some(m => m.collidesWith(trumpet)) //SI NO COLISIONAS CON NINGUNA, HAZ PUSH
       if(collides === false){
         this.mushrooms.push(
           trumpet
@@ -314,7 +314,7 @@ class Game{
         acceptedTrumpets++
       }
     }
-    this.accepted.trompeta = acceptedTrumpets
+    this.accepted.trompeta = acceptedTrumpets //ME LO GUARDO EN UN OBJETO PARA LUEGO
     
     const randomNumberOfPoisonous1 = Math.floor((Math.random() * 20) + 1)
     let acceptedP1 = 0
@@ -413,74 +413,8 @@ class Game{
     this.accepted.rovello = acceptedRovello
   }
   
-  createObstacles() {
-    const collidesBoxRocks = {
-      rock1: {
-      offsetX: 40,
-      offsetY: 55,
-      w: 30,
-      h: 25
-      },
-      rock2: {
-        offsetX: 35,
-        offsetY: 45,
-        w: 30,
-        h: 35
-      },
-      rock3: {
-        offsetX: 20,
-        offsetY: 65,
-        w: 60,
-        h: 15
-      },
-      rock4: {
-        offsetX: 30,
-        offsetY: 35,
-        w: 40,
-        h: 45
-      },
-      rock6: {
-        offsetX: 35,
-        offsetY: 50,
-        w: 35,
-        h: 30
-      }
-    } 
-
-    const rocksVariants = [
-      {
-        colFrame: 0,
-        rowFrame: 0,
-        box: collidesBoxRocks.rock1
-      },
-      {
-        colFrame: 1,
-        rowFrame: 0,
-        box: collidesBoxRocks.rock2
-      },
-      {
-        colFrame: 2,
-        rowFrame: 0,
-        box: collidesBoxRocks.rock3
-      },
-      {
-        colFrame: 0,
-        rowFrame: 1,
-        box: collidesBoxRocks.rock4
-      },
-      {
-        colFrame: 1,
-        rowFrame: 1,
-        box: collidesBoxRocks.rock4
-      },
-      {
-        colFrame: 2,
-        rowFrame: 1,
-        box: collidesBoxRocks.rock6
-      }
-    ]
-
-    rocksVariants.forEach(variant => {
+  createObstacles() { 
+    ROCKS_VARIANTS.forEach(variant => {
       let acceptedRocks = 0
       for(let i = 0; acceptedRocks < 10 && i < 100; i++){
         const randomX = Math.floor(Math.random() * (this.bg.w - 100))
@@ -496,79 +430,7 @@ class Game{
       }
     })
 
-    const collidesBoxTrees = {
-      tree1: {
-      offsetX: 50,
-      offsetY: 55,
-      w: 50,
-      h: 65
-      },
-      tree2: {
-        offsetX: 66,
-        offsetY: 65,
-        w: 23,
-        h: 65
-      },
-      tree3: {
-        offsetX: 50,
-        offsetY: 65,
-        w: 30,
-        h: 55
-      },
-      tree4: {
-        offsetX: 55,
-        offsetY: 55,
-        w: 30,
-        h: 73
-      },
-      tree5: {
-        offsetX: 60,
-        offsetY: 55,
-        w: 40,
-        h: 73
-      },
-      tree6: {
-        offsetX: 45,
-        offsetY: 60,
-        w: 55,
-        h: 60
-      }
-    } 
-
-    const treeVariants = [
-      {
-        colFrame: 0,
-        rowFrame: 0,
-        box: collidesBoxTrees.tree1
-      },
-      {
-        colFrame: 1,
-        rowFrame: 0,
-        box: collidesBoxTrees.tree2
-      },
-      {
-        colFrame: 2,
-        rowFrame: 0,
-        box: collidesBoxTrees.tree3
-      },
-      {
-        colFrame: 0,
-        rowFrame: 1,
-        box: collidesBoxTrees.tree4
-      },
-      {
-        colFrame: 1,
-        rowFrame: 1,
-        box: collidesBoxTrees.tree5
-      },
-      {
-        colFrame: 2,
-        rowFrame: 1,
-        box: collidesBoxTrees.tree6
-      }
-    ]
-
-    treeVariants.forEach(variant => {
+    TREE_VARIANTS.forEach(variant => {
       let acceptedTrees = 0
       for(let i = 0; acceptedTrees < 5 && i < 100; i++){
         const randomX = Math.floor(Math.random() * (this.bg.w - 150))
@@ -583,78 +445,6 @@ class Game{
         }
       }
     })
-
-    const collidesBoxBrambles = {
-      bramble1: {
-      offsetX: 25,
-      offsetY: 25,
-      w: 50,
-      h: 50
-      },
-      bramble2: {
-        offsetX: 25,
-        offsetY: 25,
-        w: 40,
-        h: 60
-      },
-      bramble3: {
-        offsetX: 20,
-        offsetY: 35,
-        w: 60,
-        h: 45
-      },
-      bramble4: {
-        offsetX: 10,
-        offsetY: 35,
-        w: 80,
-        h: 45
-      },
-      bramble5: {
-        offsetX: 20,
-        offsetY: 45,
-        w: 70,
-        h: 20
-      },
-      bramble6: {
-        offsetX: 20,
-        offsetY: 40,
-        w: 45,
-        h: 50
-      }
-    } 
-    
-    const brambleVariants = [
-      {
-        colFrame: 0,
-        rowFrame: 0,
-        box: collidesBoxBrambles.bramble1
-      },
-      {
-        colFrame: 1,
-        rowFrame: 0,
-        box: collidesBoxBrambles.bramble2
-      },
-      {
-        colFrame: 1,
-        rowFrame: 1,
-        box: collidesBoxBrambles.bramble3
-      },
-      {
-        colFrame: 2,
-        rowFrame: 1,
-        box: collidesBoxBrambles.bramble4
-      },
-      {
-        colFrame: 2,
-        rowFrame: 0,
-        box: collidesBoxBrambles.bramble5
-      },
-      {
-        colFrame: 0,
-        rowFrame: 1,
-        box: collidesBoxBrambles.bramble6
-      }
-    ]
 
     brambleVariants.forEach(variant => {
       let acceptedBrambles = 0
@@ -671,46 +461,6 @@ class Game{
         }
       }
     })
-
-    const collidesBoxTrunk = {
-      offsetX: 25,
-      offsetY: 45,
-      w: 60,
-      h: 25
-    } 
-
-    const trunkVariants = [
-      {
-        colFrame: 0,
-        rowFrame: 0,
-        box: collidesBoxTrunk
-      },
-      {
-        colFrame: 1,
-        rowFrame: 0,
-        box: collidesBoxTrunk
-      },
-      {
-        colFrame: 2,
-        rowFrame: 0,
-        box: collidesBoxTrunk
-      },
-      {
-        colFrame: 0,
-        rowFrame: 1,
-        box: collidesBoxTrunk
-      },
-      {
-        colFrame: 1,
-        rowFrame: 1,
-        box: collidesBoxTrunk
-      },
-      {
-        colFrame: 2,
-        rowFrame: 1,
-        box: collidesBoxTrunk
-      }
-    ]
 
     trunkVariants.forEach(variant => {
       let acceptedTrunk = 0
@@ -731,20 +481,22 @@ class Game{
 
   recolectMushroom() {
     const collidesWithMushroom = this.mushrooms.some(mushroom => this.player.collidesWith(mushroom, this.bg.x, this.bg.y))
-    if(this.player.collectPressed && collidesWithMushroom){
-      if(this.isRecolecting === false){
-        this.recolectingAudio.play()
-        this.isRecolecting = true
-        this.animateFrames = ANIMATE_TIME
-        this.mushroomCollided = this.mushrooms.find(mushroom => {
+    if(this.player.collectPressed && collidesWithMushroom){ //SI COLISIONAS Y MANTIENES ESPACIO
+
+      if(this.isRecolecting === false){ //SI NO ESTAS RECOLECTANDO
+
+        this.recolectingAudio.play() 
+        this.isRecolecting = true //INICIALIZA LA RECOGIDA
+        this.animateFrames = ANIMATE_TIME //INICIALIZA EL CONTADOR DEL SPRITE
+        this.mushroomCollided = this.mushrooms.find(mushroom => { //ENCUENTRA EL MUSHROOM COLISIONADO
           if(this.player.collidesWith(mushroom, this.bg.x, this.bg.y)){
-            return mushroom
+            return mushroom //DEVUÉLVELO
           }
         })
-      }else{
-        if(this.player.collidesWith(this.mushroomCollided, this.bg.x, this.bg.y)){
-          this.animateFrames--
-          if(this.animateFrames === 0){
+      }else{ //SI YA ESTAS RECOLECTANDO
+        if(this.player.collidesWith(this.mushroomCollided, this.bg.x, this.bg.y)){ //Y ES EL QUE HABÍAS COLISIONADO
+          this.animateFrames-- //RESTALE 1 AL CONTADOR DEL SPRITE
+          if(this.animateFrames === 0){ //MIRAR QUE TIPO DE SETA HA RECOGIDO Y HACER LO QUE CORRESPONDA
             if(this.mushroomCollided.type === "cep"){
               this.recolectedAudio.play()
               this.inventory.cep += 1
@@ -774,7 +526,7 @@ class Game{
             if(this.mushroomCollided.isPoisonous === true){
               this.player.recieveDamage(1)
             }
-            this.mushrooms = this.mushrooms.filter(mush => {
+            this.mushrooms = this.mushrooms.filter(mush => { //LO ELIMINAMOS DE LA LISTA CON UN FILTER
               if(mush === this.mushroomCollided){
                 return false
               }
@@ -848,10 +600,10 @@ class Game{
   }
 
   checkGameOver() {
-    if(this.player.lives <= 0){
+    if(this.player.lives <= 0){ //DERROTA CUANDO PIERDES TODAS LAS VIDAS
       return "defeat"
     }
-    if(this.mushroomsCreated){
+    if(this.mushroomsCreated){ //VICTÓRIA CUANDO RECOGES TODAS LAS SETAS
       if((this.inventory.cep === 1) && 
       (this.inventory.reig === this.accepted.reig) && 
       (this.inventory.rossinyol === this.accepted.rossinyol) &&

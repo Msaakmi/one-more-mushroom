@@ -42,7 +42,7 @@ class Sprite {
     }
   }
 
-  animate(isRecolecting, isMoving, isRecivingDamage) {
+  animate(isRecolecting, isMoving, isRecivingDamage) { //ESCOGEMOS QUE PARTE DEL SPRITE ANIMAR SEGUN LA ACCION DE PLAYER
     if(isRecivingDamage){
       this.animateFrame(0, 3, 4, 12)
       return
@@ -58,7 +58,7 @@ class Sprite {
     }
   }
 
-  animateFrame(initialColFrame, initialRowFrame, frames, freq) {
+  animateFrame(initialColFrame, initialRowFrame, frames, freq) { //MÉTODO PARA REUTILIZAR LA ANIMACIÓN DEL SPRITE
     if(this.sprite.rowsFrame !== initialRowFrame) {
       this.sprite.rowsFrame = initialRowFrame
       this.sprite.colsFrame = initialColFrame
