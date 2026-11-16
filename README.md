@@ -8,6 +8,9 @@ There is always one more mushroom…
 **[🍄 Play One More Mushroom](https://msaakmi.github.io/one-more-mushroom/)**
 
 <img src="assets/img/start.png" alt="One More Mushroom" width="350">
+<a href="https://msaakmi.github.io/one-more-mushroom/">
+  <img src="assets/img/readme/qr-code.png" alt="QR code to play One More Mushroom" width="180">
+</a>
 
 ## How to play
 
