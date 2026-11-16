@@ -446,7 +446,7 @@ class Game{
       }
     })
 
-    brambleVariants.forEach(variant => {
+    BRAMBLE_VARIANTS.forEach(variant => {
       let acceptedBrambles = 0
       for(let i = 0; acceptedBrambles < 3 && i < 100; i++){
         const randomX = Math.floor(Math.random() * (this.bg.w - 100))
@@ -462,7 +462,7 @@ class Game{
       }
     })
 
-    trunkVariants.forEach(variant => {
+    TRUNK_VARIANTS.forEach(variant => {
       let acceptedTrunk = 0
       for(let i = 0; acceptedTrunk < 10 && i < 100; i++){
         const randomX = Math.floor(Math.random() * (this.bg.w - 100))
@@ -560,22 +560,32 @@ class Game{
 
     if(this.inventory.cep !== 0){
       cepCounter.parentElement.style.display = "flex"
+    }else{
+      cepCounter.parentElement.style.display = "none"
     }
 
     if(this.inventory.reig !== 0){
       reigCounter.parentElement.style.display = "flex"
+    }else{
+      reigCounter.parentElement.style.display = "none"
     }
 
     if(this.inventory.rossinyol !== 0){
       rossinyolsCounter.parentElement.style.display = "flex"
+    }else{
+      rossinyolsCounter.parentElement.style.display = "none"
     }
 
     if(this.inventory.rovello !== 0){
       rovelloCounter.parentElement.style.display = "flex"
+    }else{
+      rovelloCounter.parentElement.style.display = "none"
     }
 
     if(this.inventory.trompeta !== 0){
       trompetaCounter.parentElement.style.display = "flex"
+    }else{
+      trompetaCounter.parentElement.style.display = "none"
     }
 
     cepCounter.textContent = `${this.inventory.cep}/${this.accepted.cep}`

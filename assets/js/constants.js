@@ -1,7 +1,7 @@
 //COMMON CONSTANTS
-const VX = 6
-const LIMIT_X = 90
-const LIMIT_Y = 100
+const VX = 5
+const LIMIT_X = 100
+const LIMIT_Y = 120
 const KEY_UP = "ArrowUp"
 const KEY_RIGHT = "ArrowRight"
 const KEY_DOWN = "ArrowDown"
@@ -13,8 +13,8 @@ const BG_SRC = "assets/img/bg.jpg"
 
 // GAME
 const GAME_FPS = 1000 / 60
-const CANVAS_W = 355
-const CANVAS_H = 460
+const CANVAS_W = 360
+const CANVAS_H = 480
 
 //HEARTS
 const PLAYER_HEARTS = "assets/img/heart.png"
