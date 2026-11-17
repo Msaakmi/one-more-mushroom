@@ -14,7 +14,7 @@ const BG_SRC = "assets/img/bg.jpg"
 // GAME
 const GAME_FPS = 1000 / 60
 const CANVAS_W = 350
-const CANVAS_H = 470
+const CANVAS_H = 460
 
 //HEARTS
 const PLAYER_HEARTS = "assets/img/heart.png"
@@ -40,6 +40,7 @@ const POISONOUS2 = "assets/img/mushrooms/dolent.png"
 const ROSSINYOLS = "assets/img/mushrooms/rossinyols.png"
 const TROMPETA = "assets/img/mushrooms/trompeta.png"
 const MUSHROOM_SRC = "assets/img/mushrooms/amanitaMuscaria.png"
+const GOLD_MUSHROOM = "assets/img/mushrooms/gold-mushroom.png"
 
 // OBSTACLES
 const ROCKS = "assets/img/obstacles/rocks.png"

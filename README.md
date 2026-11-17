@@ -24,6 +24,8 @@ You start with **five lives**. Lose them all, and the game is over!
 Trees, rocks, and logs block your path, so you will need to find
 your way around them.
 
+🍄 Keep your eyes open… the forest hides a special mushroom that can make you feel as good as new.
+
 ### Collecting mushrooms
 
 Move into contact with a mushroom and hold the collect control

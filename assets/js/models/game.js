@@ -27,6 +27,8 @@ class Game{
     this.recolectingAudio.volume = 0.1
     this.recolectedAudio = new Audio("assets/music/grab.mp3")
     this.recolectedAudio.volume = 0.2
+    this.allLivesAudio = new Audio("assets/music/levelup.mp3")
+    this.allLivesAudio.volume = 0.5
 
     this.mushroomCollided = null
     this.recivingDamage = false
@@ -54,7 +56,7 @@ class Game{
       rovello: 0,
       trompeta: 0,
       manita: 0,
-      dolent: 0
+      dolent: 0,
     }
 
     this.defeatAudio = new Audio("assets/music/defeat.mp3")
@@ -300,6 +302,21 @@ class Game{
   }
 
   createMushrooms() {
+    let acceptedGoldMushroom = 0
+    for(let i = 0; acceptedGoldMushroom < 1 && i < 100; i++){
+      const randomX = Math.floor(Math.random() * (this.bg.w - 60))
+      const randomY = Math.floor(Math.random() * (this.bg.h - 60))
+      const goldMushroom = new Mushroom(this.ctx, randomX, randomY, 60, 60, GOLD_MUSHROOM, "goldMushroom", false)
+      const collides = this.mushrooms.some(m => m.collidesWith(goldMushroom))
+      if(!collides){
+        this.mushrooms.push(
+          goldMushroom
+        )
+        acceptedGoldMushroom++
+      }
+
+    }
+
     const randomNumberOfTrumpets = Math.floor((Math.random() * 20) + 1)
     let acceptedTrumpets = 0
     for(let i = 0; acceptedTrumpets < randomNumberOfTrumpets && i < 100; i++){ //HACER MÁXIMO 100 INTENTOS PARA CADA GENERACION DE SETA
@@ -523,6 +540,10 @@ class Game{
             if(this.mushroomCollided.type === "dolent"){
               this.inventory.dolent += 1
             }
+            if(this.mushroomCollided.type === "goldMushroom"){
+              this.allLivesAudio.play()
+              this.player.lives = 5
+            }
             if(this.mushroomCollided.isPoisonous === true){
               this.player.recieveDamage(1)
             }
@@ -614,7 +635,7 @@ class Game{
       return "defeat"
     }
     if(this.mushroomsCreated){ //VICTÓRIA CUANDO RECOGES TODAS LAS SETAS
-      if((this.inventory.cep === 1) && 
+      if((this.inventory.cep === this.accepted.cep) && 
       (this.inventory.reig === this.accepted.reig) && 
       (this.inventory.rossinyol === this.accepted.rossinyol) &&
       (this.inventory.rovello === this.accepted.rovello) &&
