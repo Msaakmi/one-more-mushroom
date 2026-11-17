@@ -10,7 +10,7 @@ class Game{
     this.ctx = this.canvas.getContext("2d")
 
     this.bgMusic = new Audio("assets/music/minecraft.mp3")
-    this.bgMusic.volume = 0.4
+    this.bgMusic.volume = 0.2
     this.bgMusic.loop = true
 
     this.bg = new Background(this.ctx)
