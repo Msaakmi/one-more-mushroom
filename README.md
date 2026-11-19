@@ -1,5 +1,5 @@
 # One More Mushroom 🍄
-
+ALERT! This game is not responsive; to play on a computer, you must press "F12" to view it in mobile format.
 A relaxing browser game about exploring a forest and collecting mushrooms.
 
 Take a break, enjoy the music, and see what you can find.
